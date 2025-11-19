@@ -2,10 +2,17 @@ from typing import List, Optional
 from usuario import Usuario
 from mensaje import Mensaje
 from carpeta import Carpeta
+from filtro import Filtro
+from cola_urgentes import ColaUrgentes
+from grafo_red import RedServidores
 
 class ServidorCorreo:
     def __init__(self):
         self._usuarios: List[Usuario] = []
+        self.filtro = Filtro()           
+        self.cola_urgentes = ColaUrgentes() 
+        self.red = RedServidores()       
+        self.nombre = "ServidorLocal"   
 
     @property
     def usuarios(self) -> List[Usuario]:
@@ -35,7 +42,7 @@ class ServidorCorreo:
     def listar_mensajes(self, carpeta: Carpeta) -> List[str]:
         return [str(m) for m in carpeta.mensajes]
 
-    # Nueva: Mover mensaje entre carpetas (busca recursivamente)
+    # Mover mensaje entre carpetas (busca recursivamente)
     def mover_mensaje(self, usuario: Usuario, origen_nombre: str, destino_nombre: str, indice_mensaje: int) -> bool:
         origen = self._buscar_carpeta_en_usuario(usuario, origen_nombre)
         destino = self._buscar_carpeta_en_usuario(usuario, destino_nombre)
@@ -46,14 +53,14 @@ class ServidorCorreo:
             return True
         return False
 
-    # Nueva: Búsqueda por asunto en todas las carpetas del usuario
+    # Búsqueda por asunto en todas las carpetas del usuario
     def buscar_mensajes_por_asunto(self, usuario: Usuario, asunto: str) -> List[str]:
         resultados = []
         for c in usuario.bandejas:
             resultados.extend(c.buscar_mensajes_por_asunto(asunto))
         return resultados
 
-    # Nueva: Búsqueda por remitente en todas las carpetas del usuario
+    # Búsqueda por remitente en todas las carpetas del usuario
     def buscar_mensajes_por_remitente(self, usuario: Usuario, remitente_correo: str) -> List[str]:
         resultados = []
         for c in usuario.bandejas:

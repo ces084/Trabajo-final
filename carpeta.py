@@ -5,7 +5,7 @@ class Carpeta:
     def __init__(self, nombre: str):
         self._nombre = nombre
         self._mensajes: List[Mensaje] = []
-        self._subcarpetas: List[Carpeta] = []  # Nueva: lista de subcarpetas para el árbol recursivo
+        self._subcarpetas: List[Carpeta] = []  
 
     @property
     def nombre(self) -> str:

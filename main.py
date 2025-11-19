@@ -13,7 +13,10 @@ def mostrar_menu():
     print("7. Mover mensaje entre carpetas")
     print("8. Buscar mensajes por asunto (recursivo)")
     print("9. Buscar mensajes por remitente (recursivo)")
-    print("10. Salir")
+    print("10. Crear filtro automático")
+    print("11. Ver siguiente mensaje URGENTE")
+    print("12. Enviar mensaje por red de servidores (BFS)")
+    print("13. Salir")
     return input("Seleccione una opción (1-10): ")
 
 def main():
@@ -153,6 +156,26 @@ def main():
                 print("Usuario no encontrado.")
         
         elif opcion == "10":
+            palabra = input("Palabra clave para filtro: ")
+            carpeta = input("Carpeta destino: ")
+            servidor.filtro.agregar_regla(palabra, carpeta)
+        
+        elif opcion == "11":
+            msg = servidor.cola_urgentes.siguiente()
+            if msg:
+                print("URGENTE:", msg)
+            else:
+                print("No hay mensajes urgentes")
+        
+        elif opcion == "12":
+            s1 = input("Servidor origen: ")
+            s2 = input("Servidor destino: ")
+            msg = input("Mensaje a enviar: ")
+            servidor.red.conectar("ServidorA", "ServidorB")
+            servidor.red.conectar("ServidorB", "ServidorC")
+            servidor.red.enviar_con_ruta(s1, s2, msg)
+
+        elif opcion == "13":
             print("Saliendo del programa...")
             break
         
